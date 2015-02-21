@@ -1,0 +1,205 @@
+[String]
+
+String.compareTo -- lexicographical comparison --
+Compare each letter in the main string to each letter in the string in question.
+The first letter that doesn't match, return the ascii table difference between the character in the main string and the character
+in the string in question.
+
+Ex:
+"computer".compareTo("comparison") will return (int) 'u' - (int) 'a' = 21. This result is positive, therefore, the parameter
+is lexicographically first.
+
+bool String.equals( String ) -- if the strings are the same strings, not the same location in memory
+String String.substring( int ) -- get the last int characters from the string
+String String.substring( int, int ) -- get int to int characters from the string
+int String.length() -- length of the string
+bool String.contains( String ) -- true or false if a string contains a substring
+
+[ArrayList]
+java.util.ArrayList
+add( element )
+get( element )
+size()
+clear()
+toArray()
+isEmpty()
+indexOf()
+
+[Scanner]
+java.util.Scanner
+new Scanner( String, File, System.in, etc )
+hasNext(), hasNextInt, hasNextFloat, hasNextDouble, hasNextByte
+next()
+nextLine()
+nextInt(), nextFloat, nextDouble, nextByte, nextLong
+next(Pattern pattern), next(String pattern)
+
+[File]
+java.io.File
+java.io.FileNotFoundException
+File file = new File( path )
+bool exists()
+
+[Steps for using a template for your class data]
+1. Add T to the class definition: public class ClassName<T>
+2. data should be type T: private T m_data = null;
+3. Every time you see ClassName, put a <T> after it, if it is in the definition
+4. If your class defines static functions, put a <T> between static and the return type
+5. Finally, when you instantiate the class, tell it what data type T is.  ex: BinarySearchTree<String>
+6. One more thing -- if your static function makes assumptions about what T must be, you can just say <Integer> or whatever
+type it needs to be in the function signature. And don't include the <T> between the static and return type.
+
+[Trees]
+"Tree" often means "binary tree" and often means "binary search tree"
+
+[BST] - All the descendants to the left of a node are less than or equal to the node,
+all descendants to right of node are greater than or equal to the node.
+
+        5
+      /   \
+    3      10
+  /  \    /  \
+1     4  7    12
+
+* you can perform lookups with loops or recursively
+
+Node findNode( Node root, int value ) {
+    while( root != null ) {
+        int currval = root.getValue();
+        if ( currval == value ) break;
+        if ( currval < value ) {
+            root = root.getRight();
+        } else { // currval > value
+            root = root.getLeft();
+        }
+    }
+    return root;
+}
+
+Node findNode( Node root, int value ) {
+    if ( root == null ) return null;
+    int currval = root.getValue();
+    if ( currval == value ) return root;
+    if ( currval < value ) {
+        root = root.getRight();
+        findNode( root, value );
+    } else { // currval > value
+        root = root.getLeft();
+        findNode( root, value );
+    }
+}
+
+* lookup is O(log(n)) in a balanced tree, but O(n) at worst case. Worst case is every node
+has one child, making it a list. This happens when a tree is created from a sorted list.
+
+1
+ \
+  3
+   \
+    4
+     \
+      9
+       etc.
+
+* deletion and insertion are O(log(n)) time in BSTs. Printing out nodes in order is O(n),
+and you can even find the next highest node from a given node in O(log(n)) time.
+
+[Heap]
+If extracting the max or min value needs to be fast, use a heap.
+Heaps are trees (usually binary trees) where
+    max-heap - each child of a node has a value less than or equal to the node's own value
+    min-heap - each child of a node has a value greater than or equal to the node's own value
+* root node is always the largest value; can find the maximum value in constant time
+* Insertion and deletion are O(log(n)), but lookup is O(n)
+* can't find the next higher node to a given node in O(log(n)) time or print in O(n) time
+
+[Searches]
+If a tree doesn't have any sorting, it is O(n) time to do a lookup. Best to avoid this for
+large trees.
+
+BFS - Breath first search - start with root, move left to right across first level, left to right
+for every subsequent level
+* Uses additional memory because it's necessary to track the child nodes for all nodes on a 
+given level while searching that level (you build the next level to search as you're searching
+the current level)
+* If your node is likely to be in upper levels of the tree, BFS is most efficient.
+
+DFS - Depth first search - follow one branch all the way down until you find the target node or the
+end is reached. When end is reached, continue the search on the nearest ancestor with unexplored 
+children. 
+* Requires less memory because you don't have to build each level as you go.
+* If node is likely to be in lower levels of the tree, DFS has the advantage that it doesn't
+examine any single level last. BFS always examines the lowest level last.
+
+[Traversals]
+Visiting every node in the tree, often to perform some operation on each node. Usually done 
+with recursion of some kind.
+
+Preorder - node itself, left descendants, right descendants. parent first 
+Inorder - left descendants, node itself, right descendants. parent middle 
+Postorder - left descendants, right descendants, node itself. parent last 
+
+[Graphs]
+Trees are a special case of graph. Has nodes and children
+Undirected or directed edges
+Edges are sometimes weighted
+
+Common representations of graphs in code:
+* the data structure for each node includes an adjacency list
+* an adjacency matrix, a square matrix with dimension equal to number of nodes.
+the matrix element at position (i,j) represents the number of edges extending from
+node i to node j
+
+[Java]
+[Interfaces]
+Cloneable 
+java.lang.Cloneable
+* When an object implements Cloneable, it overrides Cloneable's 
+protected clone() method with the object's own public clone() method. A clone()
+method returns a deep copy of an object, where all of the object's fields are recreated
+in the new object.
+
+Serializable
+java.io.Serializable
+* To serialize an object means to convert its state to a byte stream so that the byte 
+stream can be reverted back into a copy of the object. A Java object is serializable if 
+its class or any of its superclasses implements either the java.io.Serializable interface 
+or its subinterface, java.io.Externalizable. Deserialization is the process of 
+converting the serialized form of an object back into a copy of the object.
+* Useful for making a copy of the object over a network or saving it to a file to be
+reloaded later.
+
+[Data Structures]
+HashMap
+java.util.HashMap
+Hash table based implementation of the Map interface. This implementation provides all 
+of the optional map operations, and permits null values and the null key. (The HashMap 
+class is roughly equivalent to Hashtable, except that it is unsynchronized and permits 
+nulls.) This class makes no guarantees as to the order of the map; in particular, it does 
+not guarantee that the order will remain constant over time.
+
+HashTable
+
+TreeMap
+
+PriorityQueue -- a Java version of a heap
+java.util.PriorityQueue
+* An unbounded priority queue based on a priority heap. The elements of the priority 
+queue are ordered according to their natural ordering, or by a Comparator provided at 
+queue construction time, depending on which constructor is used. A priority queue does 
+not permit null elements. A priority queue relying on natural ordering also does not 
+permit insertion of non-comparable objects (doing so may result in ClassCastException).
+
+* The head of this queue is the least element with respect to the specified ordering. 
+If multiple elements are tied for least value, the head is one of those elements -- 
+ties are broken arbitrarily. The queue retrieval operations poll, remove, peek, and 
+element access the element at the head of the queue.
+
+* A priority queue is unbounded, but has an internal capacity governing the size of an 
+array used to store the elements on the queue. It is always at least as large as the 
+queue size. As elements are added to a priority queue, its capacity grows automatically. 
+>>>The details of the growth policy are not specified.<<<
+
+* For a thread-safe PriorityQueue, use the PriorityBlockingQueue
+
+
